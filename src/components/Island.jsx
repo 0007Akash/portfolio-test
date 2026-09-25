@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Command } from 'lucide-react'
 import { scrollToId } from '../lenis'
@@ -35,20 +35,35 @@ export default function Island({ onOpenPalette }) {
   const { mode, toggle } = useMode()
   const current = sections.find((s) => s.id === active)
 
+  // Animate the pill's real width/height instead of a scale-based layout
+  // animation, so the corner radius and ring never get stretched.
+  const content = useRef(null)
+  const [size, setSize] = useState(null)
+  useLayoutEffect(() => {
+    const el = content.current
+    const measure = () => setSize({ width: el.offsetWidth, height: el.offsetHeight })
+    measure()
+    const ro = new ResizeObserver(measure)
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [])
+
   return (
     <div
       className="fixed inset-x-0 z-50 flex justify-center px-4"
       style={{ top: 'calc(env(safe-area-inset-top, 0px) + 14px)' }}
     >
       <motion.nav
-        layout
+        initial={false}
+        animate={size ?? undefined}
         onHoverStart={() => setOpen(true)}
         onHoverEnd={() => setOpen(false)}
         transition={{ type: 'spring', stiffness: 400, damping: 32 }}
         style={{ borderRadius: 28 }}
         className="overflow-hidden bg-black shadow-[0_10px_40px_-10px_rgba(0,0,0,.8)] ring-1 ring-white/10"
       >
-        <motion.div layout="position" className="flex items-center gap-3 py-2 pl-2 pr-3">
+        <div ref={content} className="w-max max-w-[calc(100vw-2rem)]">
+        <div className="flex items-center justify-between gap-3 py-2 pl-2 pr-3">
           <button
             onClick={() => setOpen((o) => !o)}
             aria-expanded={open}
@@ -76,16 +91,15 @@ export default function Island({ onOpenPalette }) {
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#28c840] opacity-60" />
             <span className="relative inline-flex h-2 w-2 rounded-full bg-[#28c840]" />
           </span>
-        </motion.div>
+        </div>
 
         <AnimatePresence initial={false}>
           {open && (
             <motion.div
               key="menu"
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.25 }}
+              initial={{ opacity: 0, y: -4 }}
+              animate={{ opacity: 1, y: 0, transition: { duration: 0.25, delay: 0.05 } }}
+              exit={{ opacity: 0, transition: { duration: 0.1 } }}
               className="px-2 pb-2"
             >
               <ul className="grid grid-cols-3 gap-1 sm:flex">
@@ -135,6 +149,7 @@ export default function Island({ onOpenPalette }) {
             </motion.div>
           )}
         </AnimatePresence>
+        </div>
       </motion.nav>
     </div>
   )
