@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { Command } from 'lucide-react'
 import { scrollToId } from '../lenis'
 import { useMode } from '../mode'
+import { profile } from '../data'
 
 export const sections = [
   { id: 'home', label: 'Home' },
@@ -55,7 +56,7 @@ export default function Island({ onOpenPalette }) {
             className="flex items-center gap-3"
           >
             <span className="relative grid h-7 w-7 place-items-center rounded-full bg-accent font-display text-[11px] font-bold text-white transition-colors duration-500">
-              AK
+              {profile.initials}
             </span>
             <span className="min-w-[4.5rem] text-left font-mono text-xs text-paper/90">
               <AnimatePresence mode="wait" initial={false}>

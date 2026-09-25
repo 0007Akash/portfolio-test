@@ -158,7 +158,7 @@ export default function Messages() {
         <div ref={box} className="mx-auto w-full max-w-md overflow-hidden rounded-[36px] border border-white/10 bg-black shadow-[0_40px_80px_-30px_rgba(0,0,0,.9)]">
           <div className="flex flex-col items-center gap-1 border-b border-white/10 bg-[#111]/90 py-3">
             <span className="grid h-10 w-10 place-items-center rounded-full bg-gradient-to-b from-[#9aa1b1] to-[#5d6372] font-display text-sm font-bold text-white">
-              AK
+              {profile.initials}
             </span>
             <span className="text-[11px] text-white/80">{profile.first} ›</span>
           </div>

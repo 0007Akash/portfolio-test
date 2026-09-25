@@ -1,13 +1,14 @@
 // All portfolio content lives here. Edit this file to make the site yours.
 
 export const profile = {
-  name: 'Aarav Kapoor',
-  first: 'Aarav',
-  handle: 'aarav.dev',
+  name: 'Akash Yadav',
+  first: 'Akash',
+  initials: 'AY',
+  handle: 'akash.dev',
   role: 'iOS Engineer & Full-Stack Developer',
   location: 'Bengaluru, IN',
   timezone: 'Asia/Kolkata',
-  email: 'hello@aarav.dev',
+  email: 'hello@akash.dev',
   resume: '#',
   socials: [
     { label: 'GitHub', href: 'https://github.com/', short: 'gh' },
