@@ -76,7 +76,7 @@ export default function CommandPalette({ open, setOpen }) {
             role="dialog"
             aria-label="Command palette"
           >
-            <div className="flex items-center gap-3 border-b border-line px-4">
+            <div className="flex items-center gap-3 border-b border-line px-4 transition-colors focus-within:border-[var(--accent)]">
               <Search className="h-4 w-4 text-mute" />
               <input
                 id="palette-search"
