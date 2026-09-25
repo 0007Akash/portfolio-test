@@ -1,0 +1,93 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #0a0c11;
+  --color-ink-2: #11141b;
+  --color-ink-3: #1a1e28;
+  --color-line: #262b37;
+  --color-paper: #e8ebf2;
+  --color-mute: #8a91a3;
+  --color-swift: #f05138;
+  --color-leaf: #47a248;
+  --color-react: #61dafb;
+  --font-display: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+/* The accent switches with the Swift / Stack mode toggle. */
+:root {
+  color-scheme: dark;
+  --accent: #f05138;
+  --accent-2: #ff9f0a;
+  --accent-soft: rgb(240 81 56 / 0.14);
+}
+:root[data-mode="stack"] {
+  --accent: #47a248;
+  --accent-2: #61dafb;
+  --accent-soft: rgb(71 162 72 / 0.16);
+}
+
+html { background: var(--color-ink); overflow-x: clip; }
+body {
+  background: var(--color-ink);
+  color: var(--color-paper);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+html, body { transition: none; }
+::selection { background: var(--accent); color: white; }
+
+h1, h2, h3 { text-wrap: balance; }
+
+.text-accent { color: var(--accent); }
+.bg-accent { background: var(--accent); }
+.border-accent { border-color: var(--accent); }
+.accent-gradient {
+  background: linear-gradient(100deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Film grain over everything */
+.grain {
+  position: fixed; inset: -50%; pointer-events: none; z-index: 60; opacity: .06;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain 1.2s steps(6) infinite;
+}
+@keyframes grain {
+  0%,100% { transform: translate(0,0) } 20% { transform: translate(-3%,2%) }
+  40% { transform: translate(2%,-3%) } 60% { transform: translate(-2%,-1%) } 80% { transform: translate(3%,3%) }
+}
+
+/* Blueprint grid used behind sections */
+.blueprint {
+  background-image:
+    linear-gradient(to right, rgb(255 255 255 / .04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(255 255 255 / .04) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.jiggle { animation: jiggle .28s ease-in-out infinite alternate; }
+@keyframes jiggle { from { transform: rotate(-2.2deg) } to { transform: rotate(2.2deg) } }
+
+.marquee { animation: marquee var(--dur, 30s) linear infinite; }
+@keyframes marquee { to { transform: translateX(-50%) } }
+
+.caret::after { content: "▍"; animation: blink 1s steps(1) infinite; color: var(--accent); }
+@keyframes blink { 50% { opacity: 0 } }
+
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { scrollbar-width: none; }
+
+@media (hover: hover) and (pointer: fine) {
+  .has-cursor, .has-cursor * { cursor: none !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grain, .marquee, .jiggle, .caret::after { animation: none !important; }
+}
